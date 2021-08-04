@@ -1,5 +1,9 @@
 <?php
 
+include_once 'classes/main.php';
+
+use Blocks\GoToTestsHub as b;
+
 class block_gototestshub extends block_base {
 
     public function init() 
@@ -15,12 +19,16 @@ class block_gototestshub extends block_base {
         }
     
         $this->content         =  new stdClass;
-        $this->content->text   = 'The content of our SimpleHTML block!';
-        $this->content->footer = 'Footer here...';
+        $this->content->text   = $this->get_block();
      
         return $this->content;
     }
+    
+    private function get_block() : string 
+    {
+        $main = new b\Main;
+        return $main->get_page();
+    }
+    
 
-    // The PHP tag and the curly bracket for the class definition 
-    // will only be closed after there is another function added in the next section.
 }
