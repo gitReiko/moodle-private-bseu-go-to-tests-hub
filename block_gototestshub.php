@@ -1,10 +1,10 @@
 <?php
 
-class block_needtodo extends block_base {
+class block_gototestshub extends block_base {
 
     public function init() 
     {
-        $this->title = get_string('need_to_do', 'block_needtodo');
+        $this->title = get_string('go_to_tests', 'block_gototestshub');
     }
 
     public function get_content() 
