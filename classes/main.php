@@ -71,7 +71,7 @@ class Main
     private function get_owl_pic() : string 
     {
         $attr = array(
-            'class' => 'owl_pic',
+            'style' => 'width: 100%; max-width: 640px;',
             'src' => '/blocks/gototestshub/pic/owl.jpg',
             'alt' => get_string('click_on_image', 'block_gototestshub')
         );
