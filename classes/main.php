@@ -72,7 +72,7 @@ class Main
     {
         $attr = array(
             'style' => 'width: 100%; max-width: 640px;',
-            'src' => '/blocks/gototestshub/pic/owl.jpg',
+            'src' => '/blocks/gototestshub/pic/hat.png',
             'alt' => get_string('click_on_image', 'block_gototestshub')
         );
 
