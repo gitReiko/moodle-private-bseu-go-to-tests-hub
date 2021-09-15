@@ -40,11 +40,11 @@ class Main
         $text = '<br>Блок предназначен только для студентов.';
         $block.= \html_writer::tag('p', $text, $attr);
 
-        $attr = array('style' => 'font-size: large; color: red;');
+        $attr = array('style' => 'font-size: large; color: #c780b8;');
         $text = 'Ссылка на тесты специализации не сформирована.';
         $block.= \html_writer::tag('p', $text, $attr);
 
-        $attr = array('style' => 'font-size: large; color: red;');
+        $attr = array('style' => 'font-size: large; color: #c780b8;');
         $text = 'Если Вы являетесь студентом, обратитесь в службу поддержки.';
         $block.= \html_writer::tag('p', $text, $attr); 
 
