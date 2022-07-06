@@ -4,24 +4,20 @@ namespace Blocks\GoToTestsHub;
 
 class DataGetter 
 {
-    private $userCohortId;
     private $cohortName;
-    private $courses;
     private $testHubId;
 
     function __construct()
     {
-        $this->userCohortId = $this->get_user_cohort_id();
-        $this->cohortName = $this->get_cohort_name();
+        $this->cohortName = $this->get_student_cohort_name();
 
-        if(empty($this->cohortName))
+        if($this->is_cohort_name_exists())
         {
-            $this->testHubId = Main::HUB_NOT_EXIST;
+            $this->testHubId = $this->get_hub_course_id();
         }
         else 
         {
-            $this->courses = $this->get_courses_from_database();
-            $this->testHubId = $this->get_tests_hub_id_from_courses();
+            $this->testHubId = Main::HUB_NOT_EXIST;
         }
     }
 
@@ -30,31 +26,40 @@ class DataGetter
         return $this->testHubId;
     }
 
-    private function get_user_cohort_id() 
+    private function get_student_cohort_name()
     {
         global $DB, $USER;
-        $where = array('userid' => $USER->id);
-        return $DB->get_field('cohort_members', 'cohortid', $where);
+
+        $sql = 'SELECT c.name 
+                FROM {cohort_members} AS cm 
+                INNER JOIN {cohort} AS c 
+                ON cm.cohortid = c.id 
+                WHERE cm.userid = ?';
+        $params = array($USER->id);
+
+        return $DB->get_field_sql($sql, $params);
     }
 
-    private function get_cohort_name()
+    private function is_cohort_name_exists() : bool 
     {
-        global $DB;
-        $where = array('id' => $this->userCohortId);
-        return $DB->get_field('cohort', 'name', $where);
-    }
-
-    private function get_courses_from_database()
-    {
-        global $DB;
-        return $DB->get_records('course', array(), '', 'id, shortname');
-    }
-
-    private function get_tests_hub_id_from_courses() 
-    {
-        foreach($this->courses as $course)
+        if(empty($this->cohortName))
         {
-            if(mb_stripos($this->cohortName, $course->shortname) !== false)
+            return false;
+        }
+        else 
+        {
+            return true;
+        }
+    }
+
+    private function get_hub_course_id()
+    {
+        $courses = $this->student_courses();
+        $courses = $this->get_only_first_part_of_name($courses);
+
+        foreach($courses as $course)
+        {
+            if(mb_stripos($this->cohortName, $course->name) !== false)
             {
                 return $course->id;
             }
@@ -63,6 +68,31 @@ class DataGetter
         return Main::HUB_NOT_EXIST;
     }
 
+    private function student_courses()
+    {
+        global $DB, $USER;
 
+        $sql = 'SELECT g.courseid as id, c.shortname as name 
+                FROM {groups_members} AS gm 
+                INNER JOIN {groups} AS g 
+                ON gm.groupid = g.id 
+                INNER JOIN {course} as c 
+                ON g.courseid = c.id
+                WHERE gm.userid = ?';
+        $params = array($USER->id);
+
+        return $DB->get_records_sql($sql, $params);
+    }
+
+    private function get_only_first_part_of_name($courses)
+    {
+        foreach($courses as $course)
+        {
+            $parts = explode(',', $course->name);
+            $course->name = $parts[0];
+        }
+
+        return $courses;
+    }
 
 }
