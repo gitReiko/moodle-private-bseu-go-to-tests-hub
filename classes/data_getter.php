@@ -70,18 +70,9 @@ class DataGetter
 
     private function student_courses()
     {
-        global $DB, $USER;
-
-        $sql = 'SELECT g.courseid as id, c.shortname as name 
-                FROM {groups_members} AS gm 
-                INNER JOIN {groups} AS g 
-                ON gm.groupid = g.id 
-                INNER JOIN {course} as c 
-                ON g.courseid = c.id
-                WHERE gm.userid = ?';
-        $params = array($USER->id);
-
-        return $DB->get_records_sql($sql, $params);
+        global $USER;
+        $onlyactive = true;
+        return enrol_get_all_users_courses($USER->id, $onlyactive);
     }
 
     private function get_only_first_part_of_name($courses)
