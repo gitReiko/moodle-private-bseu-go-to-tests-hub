@@ -37,19 +37,15 @@ class Main
         $block = $this->get_owl_pic();
 
         $attr = array('style' => 'font-size: large;');
-        $text = '<br>Блок предназначен только для студентов.';
+        $text = '<br>'.get_string('only_students', 'block_gototestshub');
         $block.= \html_writer::tag('p', $text, $attr);
 
-        $attr = array('style' => 'font-size: large; color: #9f6693;');
-        $text = 'Ссылка на тесты специализации не сформирована.';
+        $attr = array('style' => 'font-size: large; color: #913630;');
+        $text = get_string('link_not_formed', 'block_gototestshub');
         $block.= \html_writer::tag('p', $text, $attr);
 
-        $attr = array('style' => 'font-size: large; color: #9f6693;');
-        $text = 'Если Вы являетесь студентом, обратитесь в службу поддержки.';
-        $block.= \html_writer::tag('p', $text, $attr); 
-
-        $attr = array('style' => 'font-size: large;');
-        $text = '<a href="tel:+375172097999">Городской телефон ☎ +375(17)-209-79-99</a>';
+        $attr = array('style' => 'font-size: large; color: #913630;');
+        $text = get_string('contact_deans_office', 'block_gototestshub');
         $block.= \html_writer::tag('p', $text, $attr); 
 
         return $block;
